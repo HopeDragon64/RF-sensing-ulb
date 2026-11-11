@@ -1,0 +1,29 @@
+% Step 1
+% - Génération du pulse et affichage du graphe + TF
+% - Génération et enregistrement du pulse audio
+
+Fs = 48000;
+fp = 8000;
+Tp = 0.01;
+n = 1024;
+
+t = (0:n-1)/Fs;
+x = cos(2*pi*fp.*t).*(t<=Tp);
+figure(Name="Temporel");
+plot(t,x);
+
+f = (0:n-1)*Fs/n
+y = fft(x);
+figure(Name="Fréquenciel");
+plot(f,abs(y));
+
+Y = fftshift(y);
+F = Fs/n*(-n/2:n/2-1);
+figure(Name="Fréquenciel centré");
+plot(F,abs(Y));
+
+% Si Tp grand -> plus "d'oscillations" et si petit -> lisse
+% Si Fp trop grand, signal mal reconstitué en temporel (de même si trop petit) (à justifier/quantifier)
+
+Transmitter = audioplayer(x,Fs);
+playblocking(Transmitter);
